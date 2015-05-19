@@ -3,6 +3,14 @@
 - name: pull-configure | Ensure for the pull user exists
   user: name={{pull_user}} createhome=yes
 
+- name: pull-configure | Ensure pull user ssh directory
+  file: >
+    path="{{pull_user_ssh_home}}"
+    owner="{{pull_user}}"
+    group="{{pull_group}}"
+    mode=0700
+    state=directory
+
 - name: pull-configure | Setup fingerprints
   lineinfile: >
     line="{{item}}"
