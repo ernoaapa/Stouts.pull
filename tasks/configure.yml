@@ -23,9 +23,19 @@
     mode="0644"
   with_items: pull_fingerprints
 
-- name: pull-configure | Copy private keys
+- name: pull-configure | Copy private key files
   copy: src={{item}} dest={{pull_user_ssh_home}}/{{item|basename}} owner={{pull_user}} group={{pull_group}} mode=0400
   with_items: pull_private_keys
+  when: pull_private_keys is defined
+
+- name: pull-configure | Add private key
+  copy:
+    content: "{{pull_private_key}}"
+    dest: "{{pull_user_ssh_home}}/ansible-pull"
+    owner: "{{pull_user}}"
+    group: "{{pull_group}}"
+    mode: 0400
+  when: pull_private_key is defined
 
 - name: pull-configure | Create pull directories
   file: state=directory owner={{pull_user}} group={{pull_group}} path={{item}} recurse=yes

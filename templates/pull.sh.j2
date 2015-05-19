@@ -54,6 +54,7 @@ export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 {% set playbook = app.playbook|default(pull_playbook) -%}
 {% set key = app.key|default(None) -%}
 {% if not key and pull_private_keys %}{% set key = pull_private_keys[0]|basename %}{% endif %}
+{% if not key and pull_private_key %}{% set key = 'ansible-pull' %}{% endif %}
 {% if repo and playbook and key %}
 
 # Check updates for {{app.name}}
